@@ -28,6 +28,7 @@ Use regional terminology carefully:
 - Keep the deployment strategy static for Cloudflare Pages unless the user explicitly asks for SSR/Workers.
 - Do not break i18n routing or cross-locale category mapping.
 - Always run `npm run build` after structural or routing changes.
+- Dynamic-looking category routes are statically generated with `getStaticPaths()`; keep this intact for Cloudflare Pages.
 
 ## Important Architecture
 
@@ -40,6 +41,8 @@ Each category MDX file has:
 - `parent`: optional same-locale hierarchy reference
 
 Never reuse the current page slug for another locale. Use the helpers in `src/lib/content.ts` to resolve translated category entries before generating alternate URLs or locale switcher links.
+
+There are currently 26 category MDX files per locale, 78 total.
 
 ## Local Development
 
@@ -59,15 +62,17 @@ The project uses Astro latest stable with `@astrojs/tailwind`, which currently r
 
 Cloudflare Pages deployment should use build command `npm run build` and build output directory `dist`.
 
+Do not use `dist/server` for Cloudflare Pages. The project used an SSR/Workers-style output earlier, but it now intentionally builds static pages for Pages hosting.
+
 ## Key Files
 
-- `astro.config.mjs`: Astro, Tailwind, MDX, Cloudflare, and i18n configuration
+- `astro.config.mjs`: Astro, Tailwind, MDX, static output, and i18n configuration
 - `src/content.config.ts`: typed content collection schemas
 - `src/lib/i18n.ts`: locale path and language-code mapping
 - `src/lib/content.ts`: content loading and cross-locale category helpers
 - `src/layouts/Layout.astro`: canonical and hreflang link generation
 - `src/components/LocaleSwitcher.astro`: visible locale switching
 - `src/pages/index.astro`: default US homepage
-- `src/pages/[...slug].astro`: default US category pages
-- `src/pages/uk/[...slug].astro`: UK homepage and category pages
-- `src/pages/pl/[...slug].astro`: Polish homepage and category pages
+- `src/pages/[...slug].astro`: statically generated default US category pages
+- `src/pages/uk/[...slug].astro`: statically generated UK homepage and category pages
+- `src/pages/pl/[...slug].astro`: statically generated Polish homepage and category pages

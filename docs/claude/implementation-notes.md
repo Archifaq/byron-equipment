@@ -45,6 +45,8 @@ For category pages:
 
 This logic lives in `src/lib/content.ts` and is consumed by the localized `[...slug].astro` routes.
 
+Because deployment is static, each catch-all route must export `getStaticPaths()` so Astro generates concrete HTML files for every category slug.
+
 ## URL Generation
 
 Astro i18n `getRelativeLocaleUrl()` expects language codes such as:
@@ -73,6 +75,14 @@ Then verify `/uk/access-platforms` source should include:
 
 Locale switcher should link to the same locale-specific paths.
 
+The known category triplet for deployment sanity checks is:
+
+```txt
+/plate-compactors/
+/uk/wacker-plates/
+/pl/zageszczarki-plytowe/
+```
+
 ## Cloudflare Pages Deployment
 
 This project is currently configured for static Astro output so Cloudflare Pages can serve generated category routes directly.
@@ -86,3 +96,5 @@ Root directory: leave empty
 ```
 
 Do not set the output directory to `dist/server`; that is only relevant for the previous SSR/Workers-style output and will not serve the static Pages build correctly.
+
+The production Pages URL (`https://byronequipment.pages.dev`) reflects the production branch, usually `main`. Branch preview URLs are separate. If a branch preview works but the production URL does not, confirm the branch has been merged and production deployment has completed.

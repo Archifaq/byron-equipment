@@ -27,14 +27,13 @@ Create a clean, scalable frontend foundation for equipment rental category pages
 ## Current Pages
 
 - `/`
-- `/aerial-lifts`
-- `/excavators`
 - `/uk`
-- `/uk/access-platforms`
-- `/uk/excavators`
 - `/pl`
-- `/pl/podesty-ruchome`
-- `/pl/koparki`
+- 26 category pages in the default `en-US` locale
+- 26 category pages under `/uk`
+- 26 category pages under `/pl`
+
+The generated static build currently produces 81 pages total: 3 locale homepages plus 78 category pages.
 
 ## Current Category Translation Sets
 
@@ -54,6 +53,24 @@ Shared `categoryId`: `excavators`
 - `en-GB`: `excavators`
 - `pl`: `koparki`
 
+### Plate Compactors
+
+Shared `categoryId`: `plate-compactors`
+
+- `en-US`: `plate-compactors`
+- `en-GB`: `wacker-plates`
+- `pl`: `zageszczarki-plytowe`
+
 ## Critical i18n Rule
 
 Localized slugs are not interchangeable. Always resolve alternate locale category pages by `categoryId`, then use that locale's own `localizedSlug`.
+
+## Deployment State
+
+The project is configured for Cloudflare Pages static deployment, not Cloudflare Workers SSR.
+
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Root directory: empty
+
+The project previously used `@astrojs/cloudflare` SSR output, which generated `dist/server`, but that did not work with Pages static deployment. Do not reintroduce SSR/Workers unless explicitly requested.

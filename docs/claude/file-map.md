@@ -3,7 +3,7 @@
 ## Configuration
 
 - `package.json`: npm scripts and dependencies
-- `astro.config.mjs`: Astro integrations, Cloudflare adapter, server output, and i18n config
+- `astro.config.mjs`: Astro integrations, static output, and i18n config
 - `tsconfig.json`: strict Astro TypeScript config
 - `tailwind.config.mjs`: Tailwind content paths and minimal theme tokens
 - `.github/workflows/deploy.yml`: Cloudflare Pages CI workflow
@@ -17,6 +17,12 @@
 - `src/content/categories/en-US/*.mdx`: US category content
 - `src/content/categories/uk/*.mdx`: UK category content
 - `src/content/categories/pl/*.mdx`: Polish category content
+
+Current category counts:
+
+- `src/content/categories/en-US/`: 26 MDX files
+- `src/content/categories/uk/`: 26 MDX files
+- `src/content/categories/pl/`: 26 MDX files
 
 ## Locales and Content Helpers
 
@@ -36,9 +42,9 @@
 ## Routes
 
 - `src/pages/index.astro`: US homepage
-- `src/pages/[...slug].astro`: US category route
-- `src/pages/uk/[...slug].astro`: UK homepage and category route
-- `src/pages/pl/[...slug].astro`: Polish homepage and category route
+- `src/pages/[...slug].astro`: US category route with `getStaticPaths()`
+- `src/pages/uk/[...slug].astro`: UK homepage and category route with `getStaticPaths()`
+- `src/pages/pl/[...slug].astro`: Polish homepage and category route with `getStaticPaths()`
 
 ## Public SEO Files
 
@@ -53,4 +59,4 @@ Do not upload or edit these as source of truth:
 - `dist/`
 - `.astro/`
 - `.DS_Store`
-
+- `.wrangler/`

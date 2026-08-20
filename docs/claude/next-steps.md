@@ -23,7 +23,7 @@
 
 ## Infrastructure
 
-- Add Cloudflare Pages project name once confirmed.
-- Add deployment environment notes.
+- Keep Cloudflare Pages on static output directory `dist`.
+- Do not switch back to `dist/server` unless the project intentionally moves to Workers SSR.
 - Add a lightweight automated test for alternate URL generation.
-
+- Add a generated sitemap for the 81 current static pages.
