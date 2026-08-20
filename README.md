@@ -45,7 +45,7 @@ categoryId: excavators
 title: Excavators
 description: Tracked and wheeled excavators for commercial site work.
 localizedSlug: excavators
-parent: categories/en-US/earthmoving
+parent: en-us/earthmoving
 seo:
   title: Excavator Rental Marketplace | Byron Equipment
   description: Compare excavator rental availability across vetted equipment partners.
@@ -59,7 +59,7 @@ Notes:
 - The `localizedSlug` field controls the public URL path.
 - The `categoryId` field links translations across locales and must stay identical for sibling category pages.
 - Use `locale: en-GB` for files under `src/content/categories/uk`.
-- `parent` is optional and should reference another category entry when hierarchy is needed.
+- `parent` is optional and should reference another category entry ID when hierarchy is needed, e.g. `en-us/excavators`, `uk/excavators`, or `pl/koparki`.
 - Keep SEO descriptions under 180 characters.
 
 ## Deployment

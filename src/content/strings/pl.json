@@ -6,17 +6,28 @@
     "quote": "Wycena",
     "requestForQuote": "Zapytanie ofertowe",
     "categories": "Kategorie",
-    "equipment": "Sprzet",
-    "availability": "Dostepnosc"
+    "equipment": "Sprzęt",
+    "availability": "Dostępność",
+    "deposit": "Kaucja",
+    "operatorIncluded": "Z operatorem",
+    "selfOperated": "Bez operatora (samodzielna obsługa)",
+    "dailyRate": "Stawka dobowa",
+    "weeklyRate": "Stawka tygodniowa",
+    "monthlyRate": "Stawka miesięczna",
+    "minimumRentalPeriod": "Minimalny okres wynajmu",
+    "deliveryAvailable": "Dostawa dostępna",
+    "pickupAvailable": "Odbiór własny dostępny",
+    "damageWaiver": "Ubezpieczenie sprzętu (waiver)",
+    "fuelPolicy": "Zasady dotyczące paliwa"
   },
   "navigation": {
     "home": "Start",
     "categories": "Kategorie",
-    "rfq": "Popros o wycene"
+    "rfq": "Poproś o wycenę"
   },
   "market": {
-    "headline": "Wynajem sprzetu przemyslowego dla firm",
-    "subheadline": "Sprawdz dostepnosc flot w kategoriach robot ziemnych, podnoszenia, pracy na wysokosci i obslugi placu budowy.",
+    "headline": "Wynajem sprzętu przemysłowego dla firm",
+    "subheadline": "Sprawdź dostępność flot w kategoriach robót ziemnych, podnoszenia, pracy na wysokości i obsługi placu budowy.",
     "cta": "Rozpocznij zapytanie"
   }
 }

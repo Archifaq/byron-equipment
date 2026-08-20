@@ -7,7 +7,18 @@
     "requestForQuote": "Request for Quote",
     "categories": "Categories",
     "equipment": "Equipment",
-    "availability": "Availability"
+    "availability": "Availability",
+    "deposit": "Deposit",
+    "operatorIncluded": "Operated Hire",
+    "selfOperated": "Self-Drive Hire",
+    "dailyRate": "Daily Hire Rate",
+    "weeklyRate": "Weekly Hire Rate",
+    "monthlyRate": "Monthly Hire Rate",
+    "minimumRentalPeriod": "Minimum Hire Period",
+    "deliveryAvailable": "Delivery Available",
+    "pickupAvailable": "Customer Collection Available",
+    "damageWaiver": "Hire Damage Waiver (HDW)",
+    "fuelPolicy": "Fuel Policy"
   },
   "navigation": {
     "home": "Home",
