@@ -1,0 +1,58 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import HomeView from '../../components/HomeView.astro';
+import CategoryView from '../../components/CategoryView.astro';
+import { getAlternatePathsForCategory, getCategories, getCategoryBySlug, getStrings } from '../../lib/content';
+import { normalizeSlug } from '../../lib/i18n';
+
+const localePath = 'pl';
+const slug = normalizeSlug(Astro.params.slug);
+const strings = await getStrings(localePath);
+const categories = await getCategories(localePath);
+const category = slug ? await getCategoryBySlug(localePath, slug) : undefined;
+const alternatePaths = category
+  ? await getAlternatePathsForCategory(category)
+  : slug
+    ? { [localePath]: slug }
+    : { 'en-US': '', uk: '', pl: '' };
+
+if (slug && !category) {
+  Astro.response.status = 404;
+}
+---
+
+{
+  !slug ? (
+    <Layout
+      localePath={localePath}
+      title="Byron Equipment PL | Wynajem sprzetu B2B"
+      description={strings.market.subheadline}
+      alternatePaths={alternatePaths}
+      navigation={strings.navigation}
+    >
+      <HomeView localePath={localePath} strings={strings} categories={categories} />
+    </Layout>
+  ) : category ? (
+    <Layout
+      localePath={localePath}
+      title={category.data.seo.title}
+      description={category.data.seo.description}
+      alternatePaths={alternatePaths}
+      navigation={strings.navigation}
+    >
+      <CategoryView category={category} localePath={localePath} strings={strings} />
+    </Layout>
+  ) : (
+    <Layout
+      localePath={localePath}
+      title="Nie znaleziono kategorii | Byron Equipment"
+      description="Nie znaleziono wybranej kategorii sprzetu."
+      alternatePaths={alternatePaths}
+      navigation={strings.navigation}
+    >
+      <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <h1 class="text-3xl font-bold text-ink">Nie znaleziono kategorii</h1>
+      </section>
+    </Layout>
+  )
+}

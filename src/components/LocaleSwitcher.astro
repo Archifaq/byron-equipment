@@ -1,0 +1,37 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { localeMeta, localePaths, type LocalePath } from '../lib/i18n';
+
+interface Props {
+  localePath: LocalePath;
+  alternatePaths: Partial<Record<LocalePath, string>>;
+}
+
+const { localePath, alternatePaths } = Astro.props;
+const availableLocales = localePaths
+  .map((targetLocale) => {
+    const path = alternatePaths[targetLocale];
+
+    return path === undefined ? undefined : { localePath: targetLocale, path };
+  })
+  .filter((alternate): alternate is NonNullable<typeof alternate> => alternate !== undefined);
+---
+
+<nav aria-label="Locale switcher" class="flex items-center gap-1">
+  {
+    availableLocales.map((alternate) => (
+      <a
+        href={getRelativeLocaleUrl(localeMeta[alternate.localePath].code, alternate.path)}
+        hreflang={localeMeta[alternate.localePath].code}
+        class:list={[
+          'rounded border px-2.5 py-1 text-sm font-medium transition',
+          alternate.localePath === localePath
+            ? 'border-signal bg-signal text-white'
+            : 'border-slate-300 bg-white text-steel hover:border-signal hover:text-signal',
+        ]}
+      >
+        {localeMeta[alternate.localePath].label}
+      </a>
+    ))
+  }
+</nav>

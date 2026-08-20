@@ -1,0 +1,22 @@
+{
+  "locale": "pl",
+  "terminology": {
+    "rent": "Wynajmij",
+    "rental": "Wynajem",
+    "quote": "Wycena",
+    "requestForQuote": "Zapytanie ofertowe",
+    "categories": "Kategorie",
+    "equipment": "Sprzet",
+    "availability": "Dostepnosc"
+  },
+  "navigation": {
+    "home": "Start",
+    "categories": "Kategorie",
+    "rfq": "Popros o wycene"
+  },
+  "market": {
+    "headline": "Wynajem sprzetu przemyslowego dla firm",
+    "subheadline": "Sprawdz dostepnosc flot w kategoriach robot ziemnych, podnoszenia, pracy na wysokosci i obslugi placu budowy.",
+    "cta": "Rozpocznij zapytanie"
+  }
+}

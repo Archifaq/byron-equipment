@@ -1,0 +1,22 @@
+{
+  "locale": "en-US",
+  "terminology": {
+    "rent": "Rent",
+    "rental": "Rental",
+    "quote": "Quote",
+    "requestForQuote": "Request for Quote",
+    "categories": "Categories",
+    "equipment": "Equipment",
+    "availability": "Availability"
+  },
+  "navigation": {
+    "home": "Home",
+    "categories": "Categories",
+    "rfq": "Request a quote"
+  },
+  "market": {
+    "headline": "Industrial equipment rental for commercial teams",
+    "subheadline": "Source verified fleet availability across earthmoving, lifting, access, and site support categories.",
+    "cta": "Start RFQ"
+  }
+}

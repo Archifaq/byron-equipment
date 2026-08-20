@@ -1,0 +1,64 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { localeMeta, localePaths, type LocalePath } from '../lib/i18n';
+import '../styles/global.css';
+
+interface Props {
+  localePath: LocalePath;
+  title: string;
+  description: string;
+  alternatePaths: Partial<Record<LocalePath, string>>;
+  navigation: {
+    home: string;
+    categories: string;
+    rfq: string;
+  };
+}
+
+const { localePath, title, description, alternatePaths, navigation } = Astro.props;
+const alternates = localePaths
+  .map((alternateLocale) => {
+    const path = alternatePaths[alternateLocale];
+
+    return path === undefined
+      ? undefined
+      : {
+          localePath: alternateLocale,
+          hreflang: localeMeta[alternateLocale].code,
+          href: getRelativeLocaleUrl(localeMeta[alternateLocale].code, path),
+        };
+  })
+  .filter((alternate): alternate is NonNullable<typeof alternate> => alternate !== undefined);
+const defaultPath = alternatePaths['en-US'];
+---
+
+<!doctype html>
+<html lang={localeMeta[localePath].code}>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="canonical" href={Astro.url.href} />
+    {
+      alternates.map((alternate) => (
+        <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
+      ))
+    }
+    {defaultPath !== undefined && <link rel="alternate" hreflang="x-default" href={getRelativeLocaleUrl(localeMeta['en-US'].code, defaultPath)} />}
+  </head>
+  <body class="min-h-screen">
+    <div class="flex min-h-screen flex-col">
+      <Header localePath={localePath} alternatePaths={alternatePaths} labels={navigation} />
+      <main class="flex-1">
+        <slot />
+      </main>
+      <Footer localePath={localePath} />
+    </div>
+  </body>
+</html>

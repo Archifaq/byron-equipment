@@ -1,0 +1,17 @@
+---
+import { type LocalePath, localeMeta } from '../lib/i18n';
+
+interface Props {
+  localePath: LocalePath;
+}
+
+const { localePath } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-slate-200 bg-white">
+  <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <p>&copy; {year} Byron Equipment. B2B rental marketplace.</p>
+    <p>{localeMeta[localePath].market}</p>
+  </div>
+</footer>

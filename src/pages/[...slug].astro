@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CategoryView from '../components/CategoryView.astro';
+import { getAlternatePathsForCategory, getCategoryBySlug, getStrings } from '../lib/content';
+import { normalizeSlug } from '../lib/i18n';
+
+const localePath = 'en-US';
+const slug = normalizeSlug(Astro.params.slug);
+const strings = await getStrings(localePath);
+const category = await getCategoryBySlug(localePath, slug);
+const alternatePaths = category ? await getAlternatePathsForCategory(category) : { [localePath]: slug };
+
+if (!category) {
+  Astro.response.status = 404;
+}
+---
+
+{
+  category ? (
+    <Layout
+      localePath={localePath}
+      title={category.data.seo.title}
+      description={category.data.seo.description}
+      alternatePaths={alternatePaths}
+      navigation={strings.navigation}
+    >
+      <CategoryView category={category} localePath={localePath} strings={strings} />
+    </Layout>
+  ) : (
+    <Layout
+      localePath={localePath}
+      title="Category not found | Byron Equipment"
+      description="The requested equipment category could not be found."
+      alternatePaths={alternatePaths}
+      navigation={strings.navigation}
+    >
+      <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <h1 class="text-3xl font-bold text-ink">Category not found</h1>
+      </section>
+    </Layout>
+  )
+}

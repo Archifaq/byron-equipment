@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HomeView from '../components/HomeView.astro';
+import { getCategories, getStrings } from '../lib/content';
+
+const localePath = 'en-US';
+const strings = await getStrings(localePath);
+const categories = await getCategories(localePath);
+const alternatePaths = {
+  'en-US': '',
+  uk: '',
+  pl: '',
+};
+---
+
+<Layout
+  localePath={localePath}
+  title="Byron Equipment | B2B Equipment Rental Marketplace"
+  description={strings.market.subheadline}
+  alternatePaths={alternatePaths}
+  navigation={strings.navigation}
+>
+  <HomeView localePath={localePath} strings={strings} categories={categories} />
+</Layout>

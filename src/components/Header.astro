@@ -1,0 +1,34 @@
+---
+import LocaleSwitcher from './LocaleSwitcher.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { localeMeta, type LocalePath } from '../lib/i18n';
+
+interface Props {
+  localePath: LocalePath;
+  alternatePaths: Partial<Record<LocalePath, string>>;
+  labels: {
+    home: string;
+    categories: string;
+    rfq: string;
+  };
+}
+
+const { localePath, alternatePaths, labels } = Astro.props;
+const currentLocaleCode = localeMeta[localePath].code;
+---
+
+<header class="border-b border-slate-200 bg-white">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
+    <a href={getRelativeLocaleUrl(currentLocaleCode, '')} class="text-base font-semibold tracking-normal text-ink">
+      Byron Equipment
+    </a>
+    <div class="flex flex-wrap items-center gap-4">
+      <nav aria-label="Main navigation" class="flex items-center gap-4 text-sm font-medium text-steel">
+        <a class="hover:text-signal" href={getRelativeLocaleUrl(currentLocaleCode, '')}>{labels.home}</a>
+        <a class="hover:text-signal" href={getRelativeLocaleUrl(currentLocaleCode, '') + '#categories'}>{labels.categories}</a>
+        <a class="hover:text-signal" href="#rfq">{labels.rfq}</a>
+      </nav>
+      <LocaleSwitcher localePath={localePath} alternatePaths={alternatePaths} />
+    </div>
+  </div>
+</header>
