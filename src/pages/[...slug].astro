@@ -1,8 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CategoryView from '../components/CategoryView.astro';
-import { getAlternatePathsForCategory, getCategoryBySlug, getStrings } from '../lib/content';
+import { getAlternatePathsForCategory, getCategories, getCategoryBySlug, getStrings } from '../lib/content';
 import { normalizeSlug } from '../lib/i18n';
+
+export async function getStaticPaths() {
+  const categories = await getCategories('en-US');
+
+  return categories.map((category) => ({
+    params: {
+      slug: category.data.localizedSlug,
+    },
+  }));
+}
 
 const localePath = 'en-US';
 const slug = normalizeSlug(Astro.params.slug);

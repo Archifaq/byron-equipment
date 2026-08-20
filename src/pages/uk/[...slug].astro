@@ -5,6 +5,23 @@ import CategoryView from '../../components/CategoryView.astro';
 import { getAlternatePathsForCategory, getCategories, getCategoryBySlug, getStrings } from '../../lib/content';
 import { normalizeSlug } from '../../lib/i18n';
 
+export async function getStaticPaths() {
+  const categories = await getCategories('uk');
+
+  return [
+    {
+      params: {
+        slug: undefined,
+      },
+    },
+    ...categories.map((category) => ({
+      params: {
+        slug: category.data.localizedSlug,
+      },
+    })),
+  ];
+}
+
 const localePath = 'uk';
 const slug = normalizeSlug(Astro.params.slug);
 const strings = await getStrings(localePath);

@@ -1,6 +1,6 @@
 # ByronEquipment.com
 
-B2B equipment rental marketplace built with Astro, strict TypeScript, Tailwind CSS, MDX content collections, and the Cloudflare adapter.
+B2B equipment rental marketplace built with Astro, strict TypeScript, Tailwind CSS, and MDX content collections for Cloudflare Pages static hosting.
 
 ## Commands
 
@@ -63,6 +63,14 @@ Notes:
 - Keep SEO descriptions under 180 characters.
 
 ## Deployment
+
+This project is deployed to Cloudflare Pages as a static Astro site.
+
+Cloudflare Pages settings:
+
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Root directory: leave empty
 
 The workflow in `.github/workflows/deploy.yml` builds on pull requests and deploys pushes to `main` with Cloudflare Pages. Configure these repository secrets before deployment:
 

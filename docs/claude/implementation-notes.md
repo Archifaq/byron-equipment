@@ -72,3 +72,17 @@ Then verify `/uk/access-platforms` source should include:
 ```
 
 Locale switcher should link to the same locale-specific paths.
+
+## Cloudflare Pages Deployment
+
+This project is currently configured for static Astro output so Cloudflare Pages can serve generated category routes directly.
+
+Use these Pages settings:
+
+```txt
+Build command: npm run build
+Build output directory: dist
+Root directory: leave empty
+```
+
+Do not set the output directory to `dist/server`; that is only relevant for the previous SSR/Workers-style output and will not serve the static Pages build correctly.

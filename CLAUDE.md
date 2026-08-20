@@ -1,6 +1,6 @@
 # ByronEquipment.com Claude Instructions
 
-You are working on ByronEquipment.com, a B2B equipment rental marketplace built with Astro, strict TypeScript, Tailwind CSS, MDX content collections, and the Cloudflare adapter.
+You are working on ByronEquipment.com, a B2B equipment rental marketplace built with Astro, strict TypeScript, Tailwind CSS, and MDX content collections for Cloudflare Pages static hosting.
 
 ## Product Context
 
@@ -25,6 +25,7 @@ Use regional terminology carefully:
 - Use Tailwind CSS for styling.
 - Keep the design quiet, practical, and B2B-focused.
 - Do not add backend form logic unless explicitly requested.
+- Keep the deployment strategy static for Cloudflare Pages unless the user explicitly asks for SSR/Workers.
 - Do not break i18n routing or cross-locale category mapping.
 - Always run `npm run build` after structural or routing changes.
 
@@ -56,7 +57,7 @@ npm run build
 
 The project uses Astro latest stable with `@astrojs/tailwind`, which currently requires `--legacy-peer-deps` because the integration peer range has not caught up with Astro 7.
 
-Cloudflare local dev may fail on macOS versions earlier than 13.5 because `workerd` requires macOS 13.5+.
+Cloudflare Pages deployment should use build command `npm run build` and build output directory `dist`.
 
 ## Key Files
 

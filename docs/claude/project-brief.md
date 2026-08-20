@@ -10,7 +10,7 @@ ByronEquipment.com is a multilingual B2B rental marketplace for commercial equip
 - Strict TypeScript
 - Tailwind CSS
 - MDX content collections
-- `@astrojs/cloudflare` adapter
+- Cloudflare Pages static hosting
 - `@astrojs/tailwind`
 - `@astrojs/mdx`
 
@@ -57,4 +57,3 @@ Shared `categoryId`: `excavators`
 ## Critical i18n Rule
 
 Localized slugs are not interchangeable. Always resolve alternate locale category pages by `categoryId`, then use that locale's own `localizedSlug`.
-
