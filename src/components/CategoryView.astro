@@ -1,11 +1,14 @@
 ---
 import type { Category } from '../lib/content';
+import type { CategoryLink } from '../lib/content';
 import type { LocalePath } from '../lib/i18n';
 import { render } from 'astro:content';
 
 interface Props {
   category: Category;
   localePath: LocalePath;
+  breadcrumbs: CategoryLink[];
+  relatedCategories: CategoryLink[];
   strings: {
     terminology: {
       requestForQuote: string;
@@ -15,12 +18,30 @@ interface Props {
   };
 }
 
-const { category, strings } = Astro.props;
+const { category, breadcrumbs, relatedCategories, strings } = Astro.props;
 const { Content } = await render(category);
 ---
 
 <section class="bg-white">
   <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    {
+      breadcrumbs.length > 0 && (
+        <nav aria-label="Breadcrumb" class="mb-6 text-sm text-slate-500">
+          <ol class="flex flex-wrap gap-2">
+            {breadcrumbs.map((breadcrumb, index) => (
+              <li class="flex items-center gap-2">
+                {index > 0 && <span aria-hidden="true">/</span>}
+                {index === breadcrumbs.length - 1 ? (
+                  <span class="font-medium text-ink">{breadcrumb.title}</span>
+                ) : (
+                  <a class="hover:text-signal" href={breadcrumb.href}>{breadcrumb.title}</a>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
     <p class="text-sm font-semibold uppercase tracking-wide text-signal">{strings.terminology.availability}</p>
     <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight text-ink">{category.data.title}</h1>
     <p class="mt-4 max-w-2xl text-lg leading-8 text-slate-600">{category.data.description}</p>
@@ -30,6 +51,22 @@ const { Content } = await render(category);
 <section class="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_360px]">
   <article class="prose prose-slate max-w-none rounded border border-slate-200 bg-white p-6">
     <Content />
+    {
+      relatedCategories.length > 0 && (
+        <section aria-labelledby="related-categories" class="not-prose mt-8 border-t border-slate-200 pt-6">
+          <h2 id="related-categories" class="text-xl font-bold text-ink">Related Categories</h2>
+          <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+            {relatedCategories.map((relatedCategory) => (
+              <li>
+                <a class="block rounded border border-slate-200 px-4 py-3 text-sm font-semibold text-ink hover:border-signal hover:text-signal" href={relatedCategory.href}>
+                  {relatedCategory.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
   </article>
 
   <aside id="rfq" class="rounded border border-slate-200 bg-white p-5">

@@ -1,7 +1,69 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { localePathByCode, localePaths, type LocalePath } from './i18n';
+import categoryTree from '../../category-tree.json';
+import {
+  getLocalizedPath,
+  localeMeta,
+  localePathByCode,
+  localePaths,
+  type LanguageCode,
+  type LocalePath,
+} from './i18n';
 
 export type Category = CollectionEntry<'categories'>;
+
+export interface CategoryTreeLocale {
+  localizedSlug: string;
+  title: string;
+}
+
+export interface CategoryTreeEntry {
+  categoryId: string;
+  parentCategoryId: string | null;
+  locales: Record<LanguageCode, CategoryTreeLocale>;
+}
+
+interface CategoryTree {
+  categories: CategoryTreeEntry[];
+}
+
+export interface CategoryLink {
+  title: string;
+  href: string;
+}
+
+const typedCategoryTree = categoryTree as CategoryTree;
+const categoryTreeEntries = typedCategoryTree.categories;
+const categoryTreeById = new Map(categoryTreeEntries.map((entry) => [entry.categoryId, entry]));
+
+function getCategoryTreeEntry(categoryId: string): CategoryTreeEntry {
+  const entry = categoryTreeById.get(categoryId);
+
+  if (!entry) {
+    throw new Error(`Missing category-tree.json entry for categoryId: ${categoryId}`);
+  }
+
+  return entry;
+}
+
+function getTreeLocale(entry: CategoryTreeEntry, localePath: LocalePath): CategoryTreeLocale {
+  const languageCode = localeMeta[localePath].code;
+  const locale = entry.locales[languageCode];
+
+  if (!locale) {
+    throw new Error(`Missing category-tree.json locale ${languageCode} for categoryId: ${entry.categoryId}`);
+  }
+
+  return locale;
+}
+
+function toCategoryLink(entry: CategoryTreeEntry, localePath: LocalePath): CategoryLink {
+  const locale = getTreeLocale(entry, localePath);
+
+  return {
+    title: locale.title,
+    href: getLocalizedPath(localePath, locale.localizedSlug),
+  };
+}
 
 export async function getStrings(localePath: LocalePath) {
   const strings = await getCollection('strings');
@@ -43,6 +105,43 @@ export async function getAlternatePathsForCategory(category: Category) {
   );
 
   return Object.fromEntries(entries.filter(Boolean) as Array<[LocalePath, string]>);
+}
+
+export function getBreadcrumbs(categoryId: string, localePath: LocalePath): CategoryLink[] {
+  const breadcrumbs: CategoryTreeEntry[] = [];
+  const seenCategoryIds = new Set<string>();
+  let currentEntry: CategoryTreeEntry | undefined = getCategoryTreeEntry(categoryId);
+
+  while (currentEntry) {
+    if (seenCategoryIds.has(currentEntry.categoryId)) {
+      throw new Error(`Circular category-tree.json parent chain detected at categoryId: ${currentEntry.categoryId}`);
+    }
+
+    seenCategoryIds.add(currentEntry.categoryId);
+    breadcrumbs.unshift(currentEntry);
+
+    currentEntry = currentEntry.parentCategoryId
+      ? getCategoryTreeEntry(currentEntry.parentCategoryId)
+      : undefined;
+  }
+
+  return breadcrumbs.map((entry) => toCategoryLink(entry, localePath));
+}
+
+export function getRelatedCategories(categoryId: string, localePath: LocalePath): CategoryLink[] {
+  const currentEntry = getCategoryTreeEntry(categoryId);
+
+  if (currentEntry.parentCategoryId === null) {
+    return [];
+  }
+
+  return categoryTreeEntries
+    .filter(
+      (entry) =>
+        entry.categoryId !== currentEntry.categoryId &&
+        entry.parentCategoryId === currentEntry.parentCategoryId,
+    )
+    .map((entry) => toCategoryLink(entry, localePath));
 }
 
 export async function getLocalizedCategoryPaths() {

@@ -35,6 +35,19 @@ Create a clean, scalable frontend foundation for equipment rental category pages
 
 The generated static build currently produces 81 pages total: 3 locale homepages plus 78 category pages.
 
+## Current Content State
+
+The `en-US` category MDX bodies have been expanded from placeholders into practical B2B rental guidance. Each US category body now follows the approved pattern:
+
+- Intro
+- Common Use Cases
+- What to Consider Before Renting
+- Typical Specifications Range
+- FAQ
+- Related Categories where relevant
+
+UK and PL category bodies have not yet received the same content expansion and should be handled in separate localized passes.
+
 ## Current Category Translation Sets
 
 ### Aerial Access Lifts

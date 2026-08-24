@@ -1,0 +1,239 @@
+{
+  "$comment": "Rebuilt from raw frontmatter dump of all 78 MDX files (en-US, uk, pl) on 2026-08-24. All three locales are confirmed against actual file contents, not assumed. parentCategoryId is locale-agnostic (categoryId-based); resolve a locale-specific parent URL by looking up that parent's own localizedSlug for the target locale.",
+  "categories": [
+    {
+      "categoryId": "aerial-access-lifts",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "aerial-lifts", "title": "Aerial Lifts" },
+        "en-GB": { "localizedSlug": "access-platforms", "title": "Access Platforms" },
+        "pl": { "localizedSlug": "podesty-ruchome", "title": "Podesty ruchome" }
+      }
+    },
+    {
+      "categoryId": "compressors",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "air-compressors", "title": "Air Compressors" },
+        "en-GB": { "localizedSlug": "air-compressors", "title": "Air Compressors" },
+        "pl": { "localizedSlug": "sprezarki", "title": "Sprężarki" }
+      }
+    },
+    {
+      "categoryId": "boom-lifts",
+      "parentCategoryId": "aerial-access-lifts",
+      "locales": {
+        "en-US": { "localizedSlug": "boom-lifts", "title": "Boom Lifts" },
+        "en-GB": { "localizedSlug": "boom-lifts", "title": "Boom Lifts" },
+        "pl": { "localizedSlug": "podesty-przegubowo-teleskopowe", "title": "Podesty przegubowo-teleskopowe" }
+      }
+    },
+    {
+      "categoryId": "breakers-hammers",
+      "parentCategoryId": "demolition-equipment",
+      "locales": {
+        "en-US": { "localizedSlug": "breakers-and-hammers", "title": "Breakers & Hammers" },
+        "en-GB": { "localizedSlug": "breakers-and-hammers", "title": "Breakers & Hammers" },
+        "pl": { "localizedSlug": "mloty-wyburzeniowe", "title": "Młoty wyburzeniowe" }
+      }
+    },
+    {
+      "categoryId": "compaction-equipment",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "compaction-equipment", "title": "Compaction Equipment" },
+        "en-GB": { "localizedSlug": "compaction-equipment", "title": "Compaction Equipment" },
+        "pl": { "localizedSlug": "sprzet-zageszczajacy", "title": "Sprzęt zagęszczający" }
+      }
+    },
+    {
+      "categoryId": "concrete-equipment",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "concrete-equipment", "title": "Concrete Equipment" },
+        "en-GB": { "localizedSlug": "concrete-equipment", "title": "Concrete Equipment" },
+        "pl": { "localizedSlug": "sprzet-do-betonu", "title": "Sprzęt do betonu" }
+      }
+    },
+    {
+      "categoryId": "concrete-mixers",
+      "parentCategoryId": "concrete-equipment",
+      "locales": {
+        "en-US": { "localizedSlug": "concrete-mixers", "title": "Concrete Mixers" },
+        "en-GB": { "localizedSlug": "cement-mixers", "title": "Cement Mixers" },
+        "pl": { "localizedSlug": "betoniarki", "title": "Betoniarki" }
+      }
+    },
+    {
+      "categoryId": "cranes-lifting",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "cranes-and-lifting", "title": "Cranes & Lifting" },
+        "en-GB": { "localizedSlug": "cranes-and-lifting", "title": "Cranes & Lifting" },
+        "pl": { "localizedSlug": "dzwigi-i-podnosniki", "title": "Dźwigi i podnośniki" }
+      }
+    },
+    {
+      "categoryId": "crawler-excavators",
+      "parentCategoryId": "excavators",
+      "locales": {
+        "en-US": { "localizedSlug": "crawler-excavators", "title": "Crawler Excavators" },
+        "en-GB": { "localizedSlug": "tracked-excavators", "title": "Tracked Excavators" },
+        "pl": { "localizedSlug": "koparki-gasienicowe", "title": "Koparki gąsienicowe" }
+      }
+    },
+    {
+      "categoryId": "demolition-equipment",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "demolition-equipment", "title": "Demolition Equipment" },
+        "en-GB": { "localizedSlug": "demolition-equipment", "title": "Demolition Equipment" },
+        "pl": { "localizedSlug": "sprzet-do-rozbiorek", "title": "Sprzęt do rozbiórek" }
+      }
+    },
+    {
+      "categoryId": "excavators",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "excavators", "title": "Excavators" },
+        "en-GB": { "localizedSlug": "excavators", "title": "Excavators" },
+        "pl": { "localizedSlug": "koparki", "title": "Koparki" }
+      }
+    },
+    {
+      "categoryId": "generators",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "generators", "title": "Generators" },
+        "en-GB": { "localizedSlug": "generators", "title": "Generators" },
+        "pl": { "localizedSlug": "agregaty-pradotworcze", "title": "Agregaty prądotwórcze" }
+      }
+    },
+    {
+      "categoryId": "heating-drying",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "heating-and-drying", "title": "Heating & Drying" },
+        "en-GB": { "localizedSlug": "heating-and-drying", "title": "Heating & Drying" },
+        "pl": { "localizedSlug": "ogrzewanie-i-osuszanie", "title": "Ogrzewanie i osuszanie" }
+      }
+    },
+    {
+      "categoryId": "loaders",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "loaders", "title": "Loaders" },
+        "en-GB": { "localizedSlug": "loaders", "title": "Loaders" },
+        "pl": { "localizedSlug": "ladowarki", "title": "Ładowarki" }
+      }
+    },
+    {
+      "categoryId": "mini-excavators",
+      "parentCategoryId": "excavators",
+      "locales": {
+        "en-US": { "localizedSlug": "mini-excavators", "title": "Mini Excavators" },
+        "en-GB": { "localizedSlug": "mini-excavators", "title": "Mini Excavators" },
+        "pl": { "localizedSlug": "mini-koparki", "title": "Mini koparki" }
+      }
+    },
+    {
+      "categoryId": "plate-compactors",
+      "parentCategoryId": "compaction-equipment",
+      "locales": {
+        "en-US": { "localizedSlug": "plate-compactors", "title": "Plate Compactors" },
+        "en-GB": { "localizedSlug": "wacker-plates", "title": "Wacker Plates" },
+        "pl": { "localizedSlug": "zageszczarki-plytowe", "title": "Zagęszczarki płytowe" }
+      }
+    },
+    {
+      "categoryId": "power-floats",
+      "parentCategoryId": "concrete-equipment",
+      "locales": {
+        "en-US": { "localizedSlug": "power-trowels", "title": "Power Trowels" },
+        "en-GB": { "localizedSlug": "power-floats", "title": "Power Floats" },
+        "pl": { "localizedSlug": "zacieraki-do-betonu", "title": "Zacieraki do betonu" }
+      }
+    },
+    {
+      "categoryId": "road-paving-equipment",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "road-and-paving-equipment", "title": "Road & Paving Equipment" },
+        "en-GB": { "localizedSlug": "road-and-paving-equipment", "title": "Road & Paving Equipment" },
+        "pl": { "localizedSlug": "sprzet-drogowy", "title": "Sprzęt drogowy" }
+      }
+    },
+    {
+      "categoryId": "rollers",
+      "parentCategoryId": "compaction-equipment",
+      "locales": {
+        "en-US": { "localizedSlug": "rollers", "title": "Rollers" },
+        "en-GB": { "localizedSlug": "rollers", "title": "Rollers" },
+        "pl": { "localizedSlug": "walce", "title": "Walce" }
+      }
+    },
+    {
+      "categoryId": "scaffolding",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "scaffolding", "title": "Scaffolding" },
+        "en-GB": { "localizedSlug": "scaffolding", "title": "Scaffolding" },
+        "pl": { "localizedSlug": "rusztowania", "title": "Rusztowania" }
+      }
+    },
+    {
+      "categoryId": "scissor-lifts",
+      "parentCategoryId": "aerial-access-lifts",
+      "locales": {
+        "en-US": { "localizedSlug": "scissor-lifts", "title": "Scissor Lifts" },
+        "en-GB": { "localizedSlug": "scissor-lifts", "title": "Scissor Lifts" },
+        "pl": { "localizedSlug": "podesty-nozycowe", "title": "Podesty nożycowe" }
+      }
+    },
+    {
+      "categoryId": "dumpers",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "site-dumpers", "title": "Site Dumpers" },
+        "en-GB": { "localizedSlug": "dumpers", "title": "Dumpers" },
+        "pl": { "localizedSlug": "dumpery", "title": "Dumpery" }
+      }
+    },
+    {
+      "categoryId": "skid-steer-loaders",
+      "parentCategoryId": "loaders",
+      "locales": {
+        "en-US": { "localizedSlug": "skid-steer-loaders", "title": "Skid Steer Loaders" },
+        "en-GB": { "localizedSlug": "skid-steer-loaders", "title": "Skid Steer Loaders" },
+        "pl": { "localizedSlug": "ladowarki-kompaktowe", "title": "Ładowarki kompaktowe" }
+      }
+    },
+    {
+      "categoryId": "pumps",
+      "parentCategoryId": null,
+      "locales": {
+        "en-US": { "localizedSlug": "water-pumps", "title": "Water Pumps" },
+        "en-GB": { "localizedSlug": "water-pumps", "title": "Water Pumps" },
+        "pl": { "localizedSlug": "pompy", "title": "Pompy" }
+      }
+    },
+    {
+      "categoryId": "wheel-loaders",
+      "parentCategoryId": "loaders",
+      "locales": {
+        "en-US": { "localizedSlug": "wheel-loaders", "title": "Wheel Loaders" },
+        "en-GB": { "localizedSlug": "wheel-loaders", "title": "Wheel Loaders" },
+        "pl": { "localizedSlug": "ladowarki-kolowe", "title": "Ładowarki kołowe" }
+      }
+    },
+    {
+      "categoryId": "wheeled-excavators",
+      "parentCategoryId": "excavators",
+      "locales": {
+        "en-US": { "localizedSlug": "wheeled-excavators", "title": "Wheeled Excavators" },
+        "en-GB": { "localizedSlug": "wheeled-excavators", "title": "Wheeled Excavators" },
+        "pl": { "localizedSlug": "koparki-kolowe", "title": "Koparki kołowe" }
+      }
+    }
+  ]
+}

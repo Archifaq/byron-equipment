@@ -3,8 +3,9 @@
 ## Content Expansion
 
 - Add more top-level equipment categories.
-- Add category hierarchy with `parent` references.
-- Add richer MDX body content for category pages.
+- Validate category hierarchy against an explicit taxonomy source before changing `parent` references. A `category-tree.json` file is not currently present in the repository.
+- Expand UK category MDX bodies using UK rental terminology.
+- Expand PL category MDX bodies using localized Polish terminology and diacritics.
 - Expand `strings` files with RFQ form labels and validation copy.
 
 ## UX Expansion

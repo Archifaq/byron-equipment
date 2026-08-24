@@ -45,3 +45,13 @@ export function normalizeSlug(slug?: string | string[]): string {
 
   return Array.isArray(slug) ? slug.join('/') : slug;
 }
+
+export function getLocalizedPath(localePath: LocalePath, slug: string): string {
+  const normalizedSlug = slug.replace(/^\/+|\/+$/g, '');
+
+  if (localePath === 'en-US') {
+    return normalizedSlug ? `/${normalizedSlug}/` : '/';
+  }
+
+  return normalizedSlug ? `/${localePath}/${normalizedSlug}/` : `/${localePath}/`;
+}

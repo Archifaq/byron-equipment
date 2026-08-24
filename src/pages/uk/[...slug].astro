@@ -2,7 +2,14 @@
 import Layout from '../../layouts/Layout.astro';
 import HomeView from '../../components/HomeView.astro';
 import CategoryView from '../../components/CategoryView.astro';
-import { getAlternatePathsForCategory, getCategories, getCategoryBySlug, getStrings } from '../../lib/content';
+import {
+  getAlternatePathsForCategory,
+  getBreadcrumbs,
+  getCategories,
+  getCategoryBySlug,
+  getRelatedCategories,
+  getStrings,
+} from '../../lib/content';
 import { normalizeSlug } from '../../lib/i18n';
 
 export async function getStaticPaths() {
@@ -32,6 +39,8 @@ const alternatePaths = category
   : slug
     ? { [localePath]: slug }
     : { 'en-US': '', uk: '', pl: '' };
+const breadcrumbs = category ? getBreadcrumbs(category.data.categoryId, localePath) : [];
+const relatedCategories = category ? getRelatedCategories(category.data.categoryId, localePath) : [];
 
 if (slug && !category) {
   Astro.response.status = 404;
@@ -57,7 +66,13 @@ if (slug && !category) {
       alternatePaths={alternatePaths}
       navigation={strings.navigation}
     >
-      <CategoryView category={category} localePath={localePath} strings={strings} />
+      <CategoryView
+        category={category}
+        localePath={localePath}
+        breadcrumbs={breadcrumbs}
+        relatedCategories={relatedCategories}
+        strings={strings}
+      />
     </Layout>
   ) : (
     <Layout

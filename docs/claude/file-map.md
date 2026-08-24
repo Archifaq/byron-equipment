@@ -24,6 +24,12 @@ Current category counts:
 - `src/content/categories/uk/`: 26 MDX files
 - `src/content/categories/pl/`: 26 MDX files
 
+Content status:
+
+- `en-US` category bodies are expanded with B2B rental guidance.
+- `uk` and `pl` category bodies should be localized separately in future passes.
+- Do not change category frontmatter during body-only content tasks unless explicitly requested.
+
 ## Locales and Content Helpers
 
 - `src/lib/i18n.ts`: maps route paths to language codes
