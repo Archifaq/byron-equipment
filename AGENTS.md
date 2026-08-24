@@ -43,6 +43,10 @@ Current category counts:
 
 The `en-US` category bodies have been expanded with B2B rental guidance. UK and PL bodies may still need separate localized expansion in future work.
 
+`category-tree.json` exists in the repository root and is the source of truth for category hierarchy and locale metadata. It contains 26 categories with complete `en-US`, `en-GB`, and `pl` locale blocks. Use it through helpers in `src/lib/content.ts` for breadcrumbs and related categories.
+
+Manual `## Related Categories` sections have been removed from en-US MDX files. Do not add manual related-category sections back into MDX; use the dynamic related-category rendering from `CategoryView.astro`.
+
 ## Deployment
 
 Cloudflare Pages settings:
@@ -81,7 +85,7 @@ For `/uk/access-platforms`, alternates should resolve to:
 /pl/podesty-ruchome/
 ```
 
-There is currently no `category-tree.json` source-of-truth file in the repository. Do not invent canonical hierarchy changes from memory; if parent hierarchy needs validation, first ask Artur or Claude for the intended taxonomy source.
+Hierarchy changes must be made in `category-tree.json` first, then reflected through typed helpers. Do not change category `parent` frontmatter or localized slugs from memory.
 
 ## Development
 

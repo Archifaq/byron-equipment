@@ -3,7 +3,7 @@
 ## Content Expansion
 
 - Add more top-level equipment categories.
-- Validate category hierarchy against an explicit taxonomy source before changing `parent` references. A `category-tree.json` file is not currently present in the repository.
+- Use `category-tree.json` as the source of truth before changing hierarchy, breadcrumbs, or related-category behavior.
 - Expand UK category MDX bodies using UK rental terminology.
 - Expand PL category MDX bodies using localized Polish terminology and diacritics.
 - Expand `strings` files with RFQ form labels and validation copy.
@@ -11,7 +11,7 @@
 ## UX Expansion
 
 - Add category search and filtering.
-- Add breadcrumb navigation for nested categories.
+- Improve breadcrumb presentation if needed; baseline breadcrumb rendering is already implemented.
 - Add equipment detail cards within category pages.
 - Improve RFQ form states while keeping submission frontend-only until backend work is requested.
 
@@ -21,6 +21,7 @@
 - Add Open Graph and Twitter metadata.
 - Add structured data for marketplace/category pages.
 - Add localized canonical/alternate QA tests.
+- Add QA tests for breadcrumb and related-category generation from `category-tree.json`.
 
 ## Infrastructure
 

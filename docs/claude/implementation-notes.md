@@ -33,6 +33,20 @@ parent: en-us/parent-category
 
 `parent` is for same-locale hierarchy only. It is not used for translations. With the current Astro 7 glob loader, use the collection entry ID rather than a filesystem-like `categories/...` prefix, for example `en-us/excavators`, `uk/excavators`, or `pl/koparki`.
 
+## Category Tree
+
+`category-tree.json` exists at the repository root and is the source of truth for hierarchy and locale metadata.
+
+The file contains 26 category entries with complete locale blocks for:
+
+- `en-US`
+- `en-GB`
+- `pl`
+
+Use `parentCategoryId` from `category-tree.json` for hierarchy features. It is categoryId-based and locale-agnostic. Resolve locale-specific URLs by looking up the target category's `localizedSlug` for the current locale.
+
+Do not hardcode category hierarchy in routes, components, or MDX body content.
+
 ## Cross-Locale Alternates
 
 For category pages:
@@ -46,6 +60,19 @@ For category pages:
 This logic lives in `src/lib/content.ts` and is consumed by the localized `[...slug].astro` routes.
 
 Because deployment is static, each catch-all route must export `getStaticPaths()` so Astro generates concrete HTML files for every category slug.
+
+## Breadcrumbs and Related Categories
+
+`src/lib/content.ts` exposes:
+
+- `getBreadcrumbs(categoryId, localePath)`
+- `getRelatedCategories(categoryId, localePath)`
+
+Both functions read from `category-tree.json`.
+
+`getRelatedCategories()` returns sibling categories with the same `parentCategoryId`, excluding the current category. For top-level categories where `parentCategoryId === null`, it returns an empty array.
+
+`CategoryView.astro` renders breadcrumbs and the dynamic related-category block. Manual `## Related Categories` sections should not be added to MDX category bodies.
 
 ## URL Generation
 

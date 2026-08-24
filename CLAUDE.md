@@ -1,6 +1,6 @@
 # ByronEquipment.com Claude Instructions
 
-You are working on ByronEquipment.com, a B2B equipment rental marketplace built with Astro, strict TypeScript, Tailwind CSS, and MDX content collections for Cloudflare Pages static hosting.
+You are working on ByronEquipment.com, a B2B equipment rental marketplace built with Astro 7, strict TypeScript, Tailwind CSS, and MDX content collections for Cloudflare Pages static hosting.
 
 ## Product Context
 
@@ -18,6 +18,17 @@ Use regional terminology carefully:
 - UK English: "hire", "plant hire"
 - Polish: localized business terminology from `src/content/strings/pl.json`
 
+## Current Published State
+
+The category-tree integration and expanded US category content are complete and pushed to `main`.
+
+- Verified `main` commit: `d4498d9`
+- Previous commit: `0922d00`
+- Push range: `0922d00..d4498d9`
+- Commit message: `feat: add category tree and expanded US category content`
+
+This state was verified from GitHub, not only from local output.
+
 ## Core Rules
 
 - Keep TypeScript strict.
@@ -34,6 +45,14 @@ Use regional terminology carefully:
 
 Category translations are linked by `categoryId`, not by URL slug.
 
+`category-tree.json` now exists in the repository root and is the source of truth for category hierarchy and locale metadata:
+
+- 26 category entries
+- complete locale blocks for `en-US`, `en-GB`, and `pl`
+- `parentCategoryId` is categoryId-based and locale-agnostic
+
+Use `category-tree.json` for breadcrumbs and dynamic related categories. Do not reintroduce hardcoded category hierarchy in components or routes.
+
 Each category MDX file has:
 
 - `categoryId`: stable shared identifier across locale versions
@@ -43,6 +62,10 @@ Each category MDX file has:
 Never reuse the current page slug for another locale. Use the helpers in `src/lib/content.ts` to resolve translated category entries before generating alternate URLs or locale switcher links.
 
 There are currently 26 category MDX files per locale, 78 total.
+
+The `en-US` category MDX bodies have been expanded with B2B rental guidance. Manual `## Related Categories` sections have been removed from en-US MDX files; the only related-category block should be rendered dynamically from `category-tree.json`.
+
+UK and PL category MDX body expansion remains a future localized content task. Their `category-tree.json` locale metadata is already populated.
 
 ## Local Development
 
@@ -69,7 +92,8 @@ Do not use `dist/server` for Cloudflare Pages. The project used an SSR/Workers-s
 - `astro.config.mjs`: Astro, Tailwind, MDX, static output, and i18n configuration
 - `src/content.config.ts`: typed content collection schemas
 - `src/lib/i18n.ts`: locale path and language-code mapping
-- `src/lib/content.ts`: content loading and cross-locale category helpers
+- `src/lib/content.ts`: content loading, cross-locale category helpers, breadcrumbs, and related categories from `category-tree.json`
+- `category-tree.json`: source of truth for category hierarchy and locale metadata
 - `src/layouts/Layout.astro`: canonical and hreflang link generation
 - `src/components/LocaleSwitcher.astro`: visible locale switching
 - `src/pages/index.astro`: default US homepage

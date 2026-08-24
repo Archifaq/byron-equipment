@@ -5,6 +5,7 @@
 - `package.json`: npm scripts and dependencies
 - `astro.config.mjs`: Astro integrations, static output, and i18n config
 - `tsconfig.json`: strict Astro TypeScript config
+- `category-tree.json`: source of truth for category hierarchy and locale metadata
 - `tailwind.config.mjs`: Tailwind content paths and minimal theme tokens
 - `.github/workflows/deploy.yml`: Cloudflare Pages CI workflow
 
@@ -27,13 +28,14 @@ Current category counts:
 Content status:
 
 - `en-US` category bodies are expanded with B2B rental guidance.
+- Manual `## Related Categories` sections are removed from en-US MDX; related categories render dynamically from `category-tree.json`.
 - `uk` and `pl` category bodies should be localized separately in future passes.
 - Do not change category frontmatter during body-only content tasks unless explicitly requested.
 
 ## Locales and Content Helpers
 
 - `src/lib/i18n.ts`: maps route paths to language codes
-- `src/lib/content.ts`: loads strings, categories, slug lookups, and category translation lookups
+- `src/lib/content.ts`: loads strings, categories, slug lookups, category translation lookups, breadcrumbs, and related categories
 
 ## Components
 
@@ -43,7 +45,7 @@ Content status:
 - `src/components/LocaleSwitcher.astro`: links to available translated versions
 - `src/components/CategoryCard.astro`: category list card
 - `src/components/HomeView.astro`: homepage content
-- `src/components/CategoryView.astro`: category content and RFQ skeleton
+- `src/components/CategoryView.astro`: category content, breadcrumbs, dynamic related categories, and RFQ skeleton
 
 ## Routes
 

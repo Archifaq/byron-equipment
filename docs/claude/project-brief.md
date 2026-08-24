@@ -35,6 +35,15 @@ Create a clean, scalable frontend foundation for equipment rental category pages
 
 The generated static build currently produces 81 pages total: 3 locale homepages plus 78 category pages.
 
+## Current Published State
+
+The current verified `main` state includes the category tree integration and expanded US category content.
+
+- HEAD commit: `d4498d9`
+- Previous commit: `0922d00`
+- Commit message: `feat: add category tree and expanded US category content`
+- Verified push range: `0922d00..d4498d9`
+
 ## Current Content State
 
 The `en-US` category MDX bodies have been expanded from placeholders into practical B2B rental guidance. Each US category body now follows the approved pattern:
@@ -44,9 +53,21 @@ The `en-US` category MDX bodies have been expanded from placeholders into practi
 - What to Consider Before Renting
 - Typical Specifications Range
 - FAQ
-- Related Categories where relevant
 
 UK and PL category bodies have not yet received the same content expansion and should be handled in separate localized passes.
+
+Manual `## Related Categories` sections have been removed from en-US MDX. Related categories now render dynamically from `category-tree.json`.
+
+## Category Tree
+
+`category-tree.json` exists in the repository root and is the source of truth for category hierarchy and locale metadata.
+
+- 26 category entries
+- complete locale blocks for `en-US`, `en-GB`, and `pl`
+- `parentCategoryId` is locale-agnostic and categoryId-based
+- breadcrumbs and dynamic related categories are generated from this file
+
+UK/PL locale metadata in `category-tree.json` is populated. UK/PL MDX body expansion remains a separate future content task.
 
 ## Current Category Translation Sets
 
