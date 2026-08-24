@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && npm run verify:category-tree",
+    "verify:category-tree": "node --experimental-strip-types scripts/verify-category-tree.ts",
     "preview": "astro preview",
     "astro": "astro"
   },

@@ -22,6 +22,7 @@
 - Add structured data for marketplace/category pages.
 - Add localized canonical/alternate QA tests.
 - Add QA tests for breadcrumb and related-category generation from `category-tree.json`.
+- Follow up by moving `verify-category-tree` into an Astro `astro:build:done` integration hook instead of reading Astro's internal content data store from a Node script.
 
 ## Infrastructure
 
