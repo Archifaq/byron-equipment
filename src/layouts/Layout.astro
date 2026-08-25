@@ -2,7 +2,9 @@
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import StructuredData from '../components/StructuredData.astro';
 import { localeMeta, localePaths, type LocalePath } from '../lib/i18n';
+import { getOgImageUrl, getOgLocale } from '../lib/seo';
 import '../styles/global.css';
 
 interface Props {
@@ -10,6 +12,9 @@ interface Props {
   title: string;
   description: string;
   alternatePaths: Partial<Record<LocalePath, string>>;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
   navigation: {
     home: string;
     categories: string;
@@ -17,7 +22,18 @@ interface Props {
   };
 }
 
-const { localePath, title, description, alternatePaths, navigation } = Astro.props;
+const {
+  localePath,
+  title,
+  description,
+  alternatePaths,
+  navigation,
+  ogImage,
+  ogType = 'website',
+  structuredData,
+} = Astro.props;
+const currentUrl = Astro.url.href;
+const absoluteOgImage = getOgImageUrl(Astro.site ?? Astro.url.origin, ogImage);
 const alternates = localePaths
   .map((alternateLocale) => {
     const path = alternatePaths[alternateLocale];
@@ -44,13 +60,24 @@ const defaultPath = alternatePaths['en-US'];
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
-    <link rel="canonical" href={Astro.url.href} />
+    <link rel="canonical" href={currentUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:url" content={currentUrl} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content={getOgLocale(localePath)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
     {
       alternates.map((alternate) => (
         <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
       ))
     }
     {defaultPath !== undefined && <link rel="alternate" hreflang="x-default" href={getRelativeLocaleUrl(localeMeta['en-US'].code, defaultPath)} />}
+    <StructuredData data={structuredData} />
   </head>
   <body class="min-h-screen">
     <div class="flex min-h-screen flex-col">

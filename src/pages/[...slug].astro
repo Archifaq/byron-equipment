@@ -10,6 +10,7 @@ import {
   getStrings,
 } from '../lib/content';
 import { normalizeSlug } from '../lib/i18n';
+import { createBreadcrumbJsonLd, createCategoryServiceJsonLd } from '../lib/seo';
 
 export async function getStaticPaths() {
   const categories = await getCategories('en-US');
@@ -28,6 +29,12 @@ const category = await getCategoryBySlug(localePath, slug);
 const alternatePaths = category ? await getAlternatePathsForCategory(category) : { [localePath]: slug };
 const breadcrumbs = category ? getBreadcrumbs(category.data.categoryId, localePath) : [];
 const relatedCategories = category ? getRelatedCategories(category.data.categoryId, localePath) : [];
+const structuredData = category
+  ? [
+      createCategoryServiceJsonLd(Astro.site ?? Astro.url.origin, category, localePath),
+      createBreadcrumbJsonLd(Astro.site ?? Astro.url.origin, localePath, breadcrumbs),
+    ]
+  : undefined;
 
 if (!category) {
   Astro.response.status = 404;
@@ -41,6 +48,8 @@ if (!category) {
       title={category.data.seo.title}
       description={category.data.seo.description}
       alternatePaths={alternatePaths}
+      ogImage={category.data.ogImage}
+      structuredData={structuredData}
       navigation={strings.navigation}
     >
       <CategoryView

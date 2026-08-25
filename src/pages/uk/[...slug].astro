@@ -11,6 +11,7 @@ import {
   getStrings,
 } from '../../lib/content';
 import { normalizeSlug } from '../../lib/i18n';
+import { createBreadcrumbJsonLd, createCategoryServiceJsonLd, createOrganizationJsonLd } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const categories = await getCategories('uk');
@@ -41,6 +42,12 @@ const alternatePaths = category
     : { 'en-US': '', uk: '', pl: '' };
 const breadcrumbs = category ? getBreadcrumbs(category.data.categoryId, localePath) : [];
 const relatedCategories = category ? getRelatedCategories(category.data.categoryId, localePath) : [];
+const structuredData = category
+  ? [
+      createCategoryServiceJsonLd(Astro.site ?? Astro.url.origin, category, localePath),
+      createBreadcrumbJsonLd(Astro.site ?? Astro.url.origin, localePath, breadcrumbs),
+    ]
+  : createOrganizationJsonLd(Astro.site ?? Astro.url.origin);
 
 if (slug && !category) {
   Astro.response.status = 404;
@@ -54,6 +61,7 @@ if (slug && !category) {
       title="Byron Equipment UK | B2B Plant Hire Marketplace"
       description={strings.market.subheadline}
       alternatePaths={alternatePaths}
+      structuredData={structuredData}
       navigation={strings.navigation}
     >
       <HomeView localePath={localePath} strings={strings} categories={categories} />
@@ -64,6 +72,8 @@ if (slug && !category) {
       title={category.data.seo.title}
       description={category.data.seo.description}
       alternatePaths={alternatePaths}
+      ogImage={category.data.ogImage}
+      structuredData={structuredData}
       navigation={strings.navigation}
     >
       <CategoryView

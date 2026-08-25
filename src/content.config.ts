@@ -46,6 +46,7 @@ const categories = defineCollection({
     title: z.string(),
     description: z.string().max(180),
     localizedSlug: z.string(),
+    ogImage: z.string().optional(),
     parent: reference('categories').optional(),
     seo: z.object({
       title: z.string(),
