@@ -6,6 +6,7 @@
 - `astro.config.mjs`: Astro integrations, static output, and i18n config
 - `tsconfig.json`: strict Astro TypeScript config
 - `category-tree.json`: source of truth for category hierarchy and locale metadata
+- `scripts/verify-category-tree.ts`: post-build category tree/content collection consistency verifier
 - `tailwind.config.mjs`: Tailwind content paths and minimal theme tokens
 - `.github/workflows/deploy.yml`: Cloudflare Pages CI workflow
 

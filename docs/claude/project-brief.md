@@ -37,12 +37,12 @@ The generated static build currently produces 81 pages total: 3 locale homepages
 
 ## Current Published State
 
-The current verified `main` state includes the category tree integration and expanded US category content.
+The current verified `main` state includes the category tree integration, expanded US category content, and the category-tree build verifier.
 
-- HEAD commit: `d4498d9`
-- Previous commit: `0922d00`
-- Commit message: `feat: add category tree and expanded US category content`
-- Verified push range: `0922d00..d4498d9`
+- HEAD commit: `ef683c9`
+- Previous content/tree commit: `d4498d9`
+- Latest commit message: `chore: verify category tree during build`
+- Verified push range for latest verifier commit: `573cc97..ef683c9`
 
 ## Current Content State
 
@@ -106,5 +106,7 @@ The project is configured for Cloudflare Pages static deployment, not Cloudflare
 - Build command: `npm run build`
 - Build output directory: `dist`
 - Root directory: empty
+
+`npm run build` includes the category-tree verifier after `astro build`. The verifier fails the build if `category-tree.json` drifts from the Astro categories content collection entries.
 
 The project previously used `@astrojs/cloudflare` SSR output, which generated `dist/server`, but that did not work with Pages static deployment. Do not reintroduce SSR/Workers unless explicitly requested.

@@ -92,6 +92,19 @@ After i18n or route changes:
 npm run build
 ```
 
+`npm run build` runs `astro build && npm run verify:category-tree`.
+
+`scripts/verify-category-tree.ts` checks `category-tree.json` against the Astro-generated `categories` content collection entries. It verifies:
+
+- category IDs present in content but missing in the tree
+- tree entries/locales missing in content
+- localized slug mismatches
+- category parent mismatches after resolving same-locale `parent` references back to `categoryId`
+- dangling `parentCategoryId` values in `category-tree.json`
+- duplicate `categoryId` values within a locale
+
+The script currently reads Astro's generated content data store through an internal Astro API, with an inline warning next to the import. This is better than manual MDX/frontmatter parsing, but it is still not a public Astro contract. Keep the follow-up in `next-steps.md` to move this check into an Astro `astro:build:done` integration hook.
+
 Then verify `/uk/access-platforms` source should include:
 
 ```html

@@ -20,14 +20,14 @@ Use regional terminology carefully:
 
 ## Current Published State
 
-The category-tree integration and expanded US category content are complete and pushed to `main`.
+The category-tree integration, expanded US category content, and category-tree build verifier are complete and pushed to `main`.
 
-- Verified `main` commit: `d4498d9`
-- Previous commit: `0922d00`
-- Push range: `0922d00..d4498d9`
-- Commit message: `feat: add category tree and expanded US category content`
+- Verified `main` commit: `ef683c9`
+- Previous context commit: `d4498d9`
+- Push range for latest verifier commit: `573cc97..ef683c9`
+- Latest commit message: `chore: verify category tree during build`
 
-This state was verified from GitHub, not only from local output.
+The latest push to `main` was confirmed by Artur's terminal output. If strict remote verification is required, re-check the commit on GitHub by hash.
 
 ## Core Rules
 
@@ -81,6 +81,10 @@ Build with:
 npm run build
 ```
 
+`npm run build` runs `astro build` and then `npm run verify:category-tree`. The verifier compares `category-tree.json` against the Astro-generated categories content collection entries and fails the build on slug, parent, missing-entry, dangling-parent, or duplicate-category mismatches.
+
+The current verifier reads Astro's generated content data store through an internal Astro API. This is intentionally documented as technical debt in `docs/claude/next-steps.md`; a future follow-up should move the check into an Astro `astro:build:done` integration hook.
+
 The project uses Astro latest stable with `@astrojs/tailwind`, which currently requires `--legacy-peer-deps` because the integration peer range has not caught up with Astro 7.
 
 Cloudflare Pages deployment should use build command `npm run build` and build output directory `dist`.
@@ -94,6 +98,7 @@ Do not use `dist/server` for Cloudflare Pages. The project used an SSR/Workers-s
 - `src/lib/i18n.ts`: locale path and language-code mapping
 - `src/lib/content.ts`: content loading, cross-locale category helpers, breadcrumbs, and related categories from `category-tree.json`
 - `category-tree.json`: source of truth for category hierarchy and locale metadata
+- `scripts/verify-category-tree.ts`: post-build verifier for category tree/content collection consistency
 - `src/layouts/Layout.astro`: canonical and hreflang link generation
 - `src/components/LocaleSwitcher.astro`: visible locale switching
 - `src/pages/index.astro`: default US homepage

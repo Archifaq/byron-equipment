@@ -22,6 +22,7 @@ Supported locales:
 - Do not break i18n routing or cross-locale category mapping.
 - Do not add backend RFQ/form logic unless explicitly requested.
 - Run `npm run build` after content collection, routing, i18n, or component changes.
+- Treat `npm run build` as the required verification gate: it runs `astro build` and then `verify:category-tree`.
 
 ## Content and i18n
 
@@ -46,6 +47,8 @@ The `en-US` category bodies have been expanded with B2B rental guidance. UK and 
 `category-tree.json` exists in the repository root and is the source of truth for category hierarchy and locale metadata. It contains 26 categories with complete `en-US`, `en-GB`, and `pl` locale blocks. Use it through helpers in `src/lib/content.ts` for breadcrumbs and related categories.
 
 Manual `## Related Categories` sections have been removed from en-US MDX files. Do not add manual related-category sections back into MDX; use the dynamic related-category rendering from `CategoryView.astro`.
+
+`scripts/verify-category-tree.ts` runs after `astro build` and checks `category-tree.json` against the Astro-generated categories content collection entries. It currently reads Astro's internal content data store; keep the inline warning in that file, and treat migration to an Astro `astro:build:done` hook as an open follow-up.
 
 ## Deployment
 
