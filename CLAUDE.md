@@ -20,12 +20,12 @@ Use regional terminology carefully:
 
 ## Current Published State
 
-The category-tree integration, expanded US category content, category-tree build verifier, and SEO infrastructure are complete and pushed to `main`.
+The category-tree integration, expanded US category content, category-tree build verifier, SEO infrastructure, and verifier migration off Astro internals are complete and pushed to `main`.
 
-- Verified `main` commit: `a640eb8`
-- Previous verifier commit: `ef683c9`
-- Push range for latest SEO commit: `ef683c9..a640eb8`
-- Latest commit message: `feat: add sitemap metadata and structured data`
+- Verified `main` commit: `db509ef`
+- Previous SEO commit: `a640eb8`
+- Push range for latest verifier migration commit: `a640eb8..db509ef`
+- Latest commit message: `chore: migrate category tree verifier off Astro internals`
 
 The latest push to `main` was confirmed by Artur's terminal output. If strict remote verification is required, re-check the commit on GitHub by hash.
 

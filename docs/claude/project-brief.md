@@ -37,12 +37,12 @@ The generated static build currently produces 81 pages total: 3 locale homepages
 
 ## Current Published State
 
-The current verified `main` state includes the category tree integration, expanded US category content, the category-tree build verifier, and SEO infrastructure.
+The current verified `main` state includes the category tree integration, expanded US category content, the category-tree build verifier, SEO infrastructure, and verifier migration off Astro internals.
 
-- HEAD commit: `a640eb8`
-- Previous verifier commit: `ef683c9`
-- Latest commit message: `feat: add sitemap metadata and structured data`
-- Verified push range for latest SEO commit: `ef683c9..a640eb8`
+- HEAD commit: `db509ef`
+- Previous SEO commit: `a640eb8`
+- Latest commit message: `chore: migrate category tree verifier off Astro internals`
+- Verified push range for latest verifier migration commit: `a640eb8..db509ef`
 
 ## Current Content State
 
