@@ -20,12 +20,12 @@ Use regional terminology carefully:
 
 ## Current Published State
 
-The category-tree integration, expanded US category content, category-tree build verifier, SEO infrastructure, and verifier migration off Astro internals are complete and pushed to `main`.
+The category-tree integration, expanded US category content, category-tree build verifier, SEO infrastructure, verifier migration off Astro internals, and Claude context refresh are complete and pushed to `main`.
 
-- Verified `main` commit: `db509ef`
-- Previous SEO commit: `a640eb8`
-- Push range for latest verifier migration commit: `a640eb8..db509ef`
-- Latest commit message: `chore: migrate category tree verifier off Astro internals`
+- Verified `main` commit: `2c4877a`
+- Previous verifier migration commit: `db509ef`
+- Push range for latest context commit: `db509ef..2c4877a`
+- Latest commit message: `docs: update Claude context after verifier migration`
 
 The latest push to `main` was confirmed by Artur's terminal output. If strict remote verification is required, re-check the commit on GitHub by hash.
 
