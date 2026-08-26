@@ -1,8 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-// Internal Astro API, not a public contract. When updating Astro, verify this path still resolves.
-import { MutableDataStore } from '../node_modules/astro/dist/content/mutable-data-store.js';
+import YAML from 'yaml';
 
 type LanguageCode = 'en-US' | 'en-GB' | 'pl';
 
@@ -21,20 +20,18 @@ interface CategoryTree {
   categories: CategoryTreeEntry[];
 }
 
-interface ContentReference {
-  id: string;
-  collection: string;
-}
-
-interface AstroCategoryEntry {
-  id: string;
-  data: {
-    locale: LanguageCode;
-    categoryId: string;
-    localizedSlug: string;
-    parent?: ContentReference | string;
+interface CategoryFrontmatter {
+  locale: LanguageCode;
+  categoryId: string;
+  title: string;
+  description: string;
+  localizedSlug: string;
+  parent?: string;
+  ogImage?: string;
+  seo: {
+    title: string;
+    description: string;
   };
-  filePath?: string;
 }
 
 interface CategoryEntry {
@@ -50,12 +47,6 @@ interface Issue {
   lines: string[];
 }
 
-const locales: LanguageCode[] = ['en-US', 'en-GB', 'pl'];
-const dataStorePath = new URL('../node_modules/.astro/data-store.json', import.meta.url);
-const site = 'https://byronequipment.com';
-const sitemapPath = 'dist/sitemap-index.xml';
-const categoryPathPattern = /^\/(?:uk\/|pl\/)?[^/]+\/$/;
-
 interface SitemapEntry {
   loc: string;
   alternates: Map<string, string>;
@@ -66,48 +57,152 @@ interface HtmlEntry {
   alternates: Map<string, string>;
 }
 
+const locales: LanguageCode[] = ['en-US', 'en-GB', 'pl'];
+const categoriesRoot = 'src/content/categories';
+const site = 'https://byronequipment.com';
+const sitemapPath = 'dist/sitemap-index.xml';
+const categoryPathPattern = /^\/(?:uk\/|pl\/)?[^/]+\/$/;
+const localeByFolder: Record<string, LanguageCode> = {
+  'en-us': 'en-US',
+  uk: 'en-GB',
+  pl: 'pl',
+};
+
 function readJson(filePath: string): CategoryTree {
   return JSON.parse(fs.readFileSync(filePath, 'utf8')) as CategoryTree;
 }
 
-function normalizeParent(parent: ContentReference | string | undefined): string | null {
-  if (!parent) {
-    return null;
-  }
+function getMdxFiles(dir: string): string[] {
+  return fs
+    .readdirSync(dir, { withFileTypes: true })
+    .flatMap((entry) => {
+      const entryPath = path.join(dir, entry.name);
 
-  if (typeof parent === 'string') {
-    return parent;
-  }
-
-  return parent.id;
-}
-
-async function loadMdxCategories(): Promise<CategoryEntry[]> {
-  if (!fs.existsSync(dataStorePath)) {
-    throw new Error(
-      'Missing Astro content data store at node_modules/.astro/data-store.json. Run `astro build` or `astro sync` before `npm run verify:category-tree`.',
-    );
-  }
-
-  const store = await MutableDataStore.fromFile(dataStorePath);
-  const entries = store.values('categories') as AstroCategoryEntry[];
-
-  return entries
-    .map((entry) => {
-      if (!entry.data.categoryId || !entry.data.localizedSlug || !entry.data.locale) {
-        throw new Error(`Missing categoryId, localizedSlug, or locale in content entry: ${entry.id}`);
+      if (entry.isDirectory()) {
+        return getMdxFiles(entryPath);
       }
 
-      return {
-        file: entry.filePath ?? `(no filePath for ${entry.id})`,
-        locale: entry.data.locale,
-        entryId: entry.id,
-        categoryId: entry.data.categoryId,
-        localizedSlug: entry.data.localizedSlug,
-        parent: normalizeParent(entry.data.parent),
-      };
+      return entry.isFile() && entry.name.endsWith('.mdx') ? [entryPath] : [];
     })
-    .sort((a, b) => a.file.localeCompare(b.file));
+    .sort();
+}
+
+function getEntryId(filePath: string): string {
+  const relativePath = path.relative(categoriesRoot, filePath).split(path.sep).join('/');
+  const parts = relativePath.split('/');
+
+  if (parts.length < 2) {
+    throw new Error(`Category MDX file must be inside a locale directory: ${filePath}`);
+  }
+
+  parts[0] = parts[0].toLowerCase();
+
+  return parts.join('/').replace(/\.mdx$/, '');
+}
+
+function getExpectedLocale(filePath: string): LanguageCode {
+  const localeFolder = path.relative(categoriesRoot, filePath).split(path.sep)[0]?.toLowerCase();
+  const locale = localeFolder ? localeByFolder[localeFolder] : undefined;
+
+  if (!locale) {
+    throw new Error(`Unsupported category locale folder in file path: ${filePath}`);
+  }
+
+  return locale;
+}
+
+function getFrontmatterBlock(filePath: string): string {
+  const file = fs.readFileSync(filePath, 'utf8');
+  const match = file.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+
+  if (!match) {
+    throw new Error(`Missing frontmatter block: ${filePath}`);
+  }
+
+  return match[1];
+}
+
+function assertString(value: unknown, field: string, filePath: string): string {
+  if (typeof value !== 'string' || value.length === 0) {
+    throw new Error(`Invalid or missing ${field} in ${filePath}`);
+  }
+
+  return value;
+}
+
+function assertOptionalString(value: unknown, field: string, filePath: string): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return assertString(value, field, filePath);
+}
+
+function assertMaxLength(value: string, field: string, maxLength: number, filePath: string): void {
+  if (value.length > maxLength) {
+    throw new Error(`Invalid ${field} length in ${filePath}: expected <= ${maxLength}, actual ${value.length}`);
+  }
+}
+
+function parseCategoryFrontmatter(filePath: string): CategoryFrontmatter {
+  const parsed = YAML.parse(getFrontmatterBlock(filePath)) as Record<string, unknown> | null;
+
+  if (!parsed || typeof parsed !== 'object') {
+    throw new Error(`Invalid frontmatter object: ${filePath}`);
+  }
+
+  const expectedLocale = getExpectedLocale(filePath);
+  const locale = assertString(parsed.locale, 'locale', filePath) as LanguageCode;
+
+  if (!locales.includes(locale)) {
+    throw new Error(`Invalid locale in ${filePath}: ${locale}`);
+  }
+
+  if (locale !== expectedLocale) {
+    throw new Error(`Locale mismatch in ${filePath}: expected ${expectedLocale}, actual ${locale}`);
+  }
+
+  const description = assertString(parsed.description, 'description', filePath);
+  assertMaxLength(description, 'description', 180, filePath);
+
+  const seo = parsed.seo;
+
+  if (!seo || typeof seo !== 'object' || Array.isArray(seo)) {
+    throw new Error(`Invalid or missing seo in ${filePath}`);
+  }
+
+  const seoRecord = seo as Record<string, unknown>;
+  const seoDescription = assertString(seoRecord.description, 'seo.description', filePath);
+  assertMaxLength(seoDescription, 'seo.description', 180, filePath);
+
+  return {
+    locale,
+    categoryId: assertString(parsed.categoryId, 'categoryId', filePath),
+    title: assertString(parsed.title, 'title', filePath),
+    description,
+    localizedSlug: assertString(parsed.localizedSlug, 'localizedSlug', filePath),
+    parent: assertOptionalString(parsed.parent, 'parent', filePath),
+    ogImage: assertOptionalString(parsed.ogImage, 'ogImage', filePath),
+    seo: {
+      title: assertString(seoRecord.title, 'seo.title', filePath),
+      description: seoDescription,
+    },
+  };
+}
+
+function loadMdxCategories(): CategoryEntry[] {
+  return getMdxFiles(categoriesRoot).map((file) => {
+    const frontmatter = parseCategoryFrontmatter(file);
+
+    return {
+      file,
+      locale: frontmatter.locale,
+      entryId: getEntryId(file),
+      categoryId: frontmatter.categoryId,
+      localizedSlug: frontmatter.localizedSlug,
+      parent: frontmatter.parent ?? null,
+    };
+  });
 }
 
 function printSection(title: string, issues: Issue[]): void {
@@ -269,9 +364,7 @@ function verifySeoOutput(): number {
   return totalIssues;
 }
 
-async function main(): Promise<void> {
-  const tree = readJson('category-tree.json');
-  const mdxEntries = await loadMdxCategories();
+function verifyCategoryTree(tree: CategoryTree, mdxEntries: CategoryEntry[]): number {
   const treeByCategoryId = new Map(tree.categories.map((entry) => [entry.categoryId, entry]));
   const mdxByLocaleAndCategoryId = new Map(
     mdxEntries.map((entry) => [`${entry.locale}:${entry.categoryId}`, entry]),
@@ -327,7 +420,7 @@ async function main(): Promise<void> {
           lines: [
             `categoryId=${treeEntry.categoryId} locale=${locale}`,
             `expected=MDX entry with localizedSlug="${treeLocale.localizedSlug}"`,
-            'actual=missing Astro content collection entry',
+            'actual=missing MDX frontmatter entry',
           ],
         });
         continue;
@@ -400,16 +493,27 @@ async function main(): Promise<void> {
   printSection('DANGLING parentCategoryId', danglingParentCategoryId);
   printSection('DUPLICATE categoryId', duplicateCategoryId);
   console.log('');
-  console.log(`SUMMARY: ${totalIssues} mismatch found across ${tree.categories.length} tree entries / ${mdxEntries.length} Astro content collection entries.`);
+  console.log(`SUMMARY: ${totalIssues} mismatch found across ${tree.categories.length} tree entries / ${mdxEntries.length} MDX files.`);
   console.log(`EXIT CODE: ${totalIssues === 0 ? 0 : 1}`);
+
+  return totalIssues;
+}
+
+function main(): void {
+  const tree = readJson('category-tree.json');
+  const mdxEntries = loadMdxCategories();
+  const categoryIssues = verifyCategoryTree(tree, mdxEntries);
+
   console.log('');
 
   const seoIssues = verifySeoOutput();
 
-  process.exitCode = totalIssues + seoIssues === 0 ? 0 : 1;
+  process.exitCode = categoryIssues + seoIssues === 0 ? 0 : 1;
 }
 
-main().catch((error: unknown) => {
+try {
+  main();
+} catch (error: unknown) {
   console.error(error);
   process.exitCode = 1;
-});
+}

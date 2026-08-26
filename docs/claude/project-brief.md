@@ -37,12 +37,12 @@ The generated static build currently produces 81 pages total: 3 locale homepages
 
 ## Current Published State
 
-The current verified `main` state includes the category tree integration, expanded US category content, and the category-tree build verifier.
+The current verified `main` state includes the category tree integration, expanded US category content, the category-tree build verifier, and SEO infrastructure.
 
-- HEAD commit: `ef683c9`
-- Previous content/tree commit: `d4498d9`
-- Latest commit message: `chore: verify category tree during build`
-- Verified push range for latest verifier commit: `573cc97..ef683c9`
+- HEAD commit: `a640eb8`
+- Previous verifier commit: `ef683c9`
+- Latest commit message: `feat: add sitemap metadata and structured data`
+- Verified push range for latest SEO commit: `ef683c9..a640eb8`
 
 ## Current Content State
 
@@ -99,6 +99,21 @@ Shared `categoryId`: `plate-compactors`
 
 Localized slugs are not interchangeable. Always resolve alternate locale category pages by `categoryId`, then use that locale's own `localizedSlug`.
 
+## Current SEO State
+
+The project now generates `/sitemap-index.xml` dynamically from `src/pages/sitemap-index.xml.ts`; the previous static `public/sitemap-index.xml` placeholder was removed.
+
+SEO coverage includes:
+
+- 81 sitemap URLs: 3 locale homepages plus 78 category pages
+- localized sitemap alternates generated from real category translation mappings
+- canonical, hreflang, Open Graph, and Twitter metadata in `Layout.astro`
+- `Service` and `BreadcrumbList` JSON-LD on category pages
+- `Organization` JSON-LD on homepages
+- optional category `ogImage` frontmatter with fallback to `/images/byron-og-default.png`
+
+`scripts/verify-category-tree.ts` performs both category-tree consistency checks and generated HTML/sitemap canonical-hreflang drift checks after `astro build`. It reads category MDX frontmatter from disk with the installed YAML parser and mirrors Astro glob-loader entry IDs by lowercasing the locale path segment and removing `.mdx`.
+
 ## Deployment State
 
 The project is configured for Cloudflare Pages static deployment, not Cloudflare Workers SSR.
@@ -107,6 +122,6 @@ The project is configured for Cloudflare Pages static deployment, not Cloudflare
 - Build output directory: `dist`
 - Root directory: empty
 
-`npm run build` includes the category-tree verifier after `astro build`. The verifier fails the build if `category-tree.json` drifts from the Astro categories content collection entries.
+`npm run build` includes the category-tree and SEO output verifier after `astro build`. The verifier fails the build if `category-tree.json` drifts from category MDX frontmatter, or if generated category HTML drifts from sitemap canonical/hreflang entries.
 
 The project previously used `@astrojs/cloudflare` SSR output, which generated `dist/server`, but that did not work with Pages static deployment. Do not reintroduce SSR/Workers unless explicitly requested.

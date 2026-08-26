@@ -20,12 +20,12 @@ Use regional terminology carefully:
 
 ## Current Published State
 
-The category-tree integration, expanded US category content, and category-tree build verifier are complete and pushed to `main`.
+The category-tree integration, expanded US category content, category-tree build verifier, and SEO infrastructure are complete and pushed to `main`.
 
-- Verified `main` commit: `ef683c9`
-- Previous context commit: `d4498d9`
-- Push range for latest verifier commit: `573cc97..ef683c9`
-- Latest commit message: `chore: verify category tree during build`
+- Verified `main` commit: `a640eb8`
+- Previous verifier commit: `ef683c9`
+- Push range for latest SEO commit: `ef683c9..a640eb8`
+- Latest commit message: `feat: add sitemap metadata and structured data`
 
 The latest push to `main` was confirmed by Artur's terminal output. If strict remote verification is required, re-check the commit on GitHub by hash.
 
@@ -81,9 +81,9 @@ Build with:
 npm run build
 ```
 
-`npm run build` runs `astro build` and then `npm run verify:category-tree`. The verifier compares `category-tree.json` against the Astro-generated categories content collection entries and fails the build on slug, parent, missing-entry, dangling-parent, or duplicate-category mismatches.
+`npm run build` runs `astro build` and then `npm run verify:category-tree`. The verifier compares `category-tree.json` against category MDX frontmatter parsed from disk and fails the build on slug, parent, missing-entry, dangling-parent, or duplicate-category mismatches. It also verifies generated category-page HTML against `dist/sitemap-index.xml` for canonical and hreflang/sitemap drift.
 
-The current verifier reads Astro's generated content data store through an internal Astro API. This is intentionally documented as technical debt in `docs/claude/next-steps.md`; a future follow-up should move the check into an Astro `astro:build:done` integration hook.
+The verifier intentionally avoids Astro's internal content data store. When it builds MDX entry IDs from file paths, it mirrors Astro glob-loader behavior by lowercasing the locale path segment and removing the `.mdx` extension, for example `src/content/categories/en-US/excavators.mdx` becomes `en-us/excavators`.
 
 The project uses Astro latest stable with `@astrojs/tailwind`, which currently requires `--legacy-peer-deps` because the integration peer range has not caught up with Astro 7.
 
@@ -97,9 +97,12 @@ Do not use `dist/server` for Cloudflare Pages. The project used an SSR/Workers-s
 - `src/content.config.ts`: typed content collection schemas
 - `src/lib/i18n.ts`: locale path and language-code mapping
 - `src/lib/content.ts`: content loading, cross-locale category helpers, breadcrumbs, and related categories from `category-tree.json`
+- `src/lib/seo.ts`: sitemap routes, OG locale/image helpers, and JSON-LD builders
 - `category-tree.json`: source of truth for category hierarchy and locale metadata
-- `scripts/verify-category-tree.ts`: post-build verifier for category tree/content collection consistency
-- `src/layouts/Layout.astro`: canonical and hreflang link generation
+- `scripts/verify-category-tree.ts`: post-build verifier for category tree/content collection consistency plus sitemap/canonical/hreflang output QA
+- `src/layouts/Layout.astro`: canonical, hreflang, Open Graph, Twitter, and structured-data rendering
+- `src/pages/sitemap-index.xml.ts`: generated XML sitemap with localized alternate links
+- `src/components/StructuredData.astro`: JSON-LD script renderer
 - `src/components/LocaleSwitcher.astro`: visible locale switching
 - `src/pages/index.astro`: default US homepage
 - `src/pages/[...slug].astro`: statically generated default US category pages

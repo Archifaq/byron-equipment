@@ -29,9 +29,12 @@ Optional:
 
 ```yaml
 parent: en-us/parent-category
+ogImage: /images/category-specific-og.png
 ```
 
 `parent` is for same-locale hierarchy only. It is not used for translations. With the current Astro 7 glob loader, use the collection entry ID rather than a filesystem-like `categories/...` prefix, for example `en-us/excavators`, `uk/excavators`, or `pl/koparki`.
+
+`ogImage` is optional. If omitted, SEO metadata falls back to `/images/byron-og-default.png`.
 
 ## Category Tree
 
@@ -84,6 +87,21 @@ Astro i18n `getRelativeLocaleUrl()` expects language codes such as:
 
 The visible route folder for UK is `uk`, but the locale code remains `en-GB`. Use `localeMeta[localePath].code` from `src/lib/i18n.ts` when generating URLs.
 
+## SEO Output
+
+`src/lib/seo.ts` centralizes SEO helpers:
+
+- `getSitemapRoutes(site)` generates the 81 sitemap routes.
+- `getAlternateLinks(site, alternatePaths)` converts per-locale paths into absolute sitemap alternates.
+- `getOgLocale(localePath)` maps Astro locale paths to Open Graph locale values: `en_US`, `en_GB`, `pl_PL`.
+- `createCategoryServiceJsonLd()` emits `Service` JSON-LD for category pages.
+- `createBreadcrumbJsonLd()` emits `BreadcrumbList` JSON-LD from existing breadcrumbs.
+- `createOrganizationJsonLd()` emits homepage `Organization` JSON-LD without a logo unless a real logo asset exists.
+
+`src/pages/sitemap-index.xml.ts` generates a `urlset` sitemap at `/sitemap-index.xml`, not a sitemap index that points elsewhere. The old static `public/sitemap-index.xml` placeholder was removed.
+
+`src/components/StructuredData.astro` renders JSON-LD blocks. Do not add fake price, rating, review, availability, or Product schema fields; the site is RFQ/lead-generation oriented, so category pages use `Service`.
+
 ## Verification Checklist
 
 After i18n or route changes:
@@ -94,7 +112,7 @@ npm run build
 
 `npm run build` runs `astro build && npm run verify:category-tree`.
 
-`scripts/verify-category-tree.ts` checks `category-tree.json` against the Astro-generated `categories` content collection entries. It verifies:
+`scripts/verify-category-tree.ts` checks `category-tree.json` against category MDX frontmatter parsed from disk with the installed YAML parser. It verifies:
 
 - category IDs present in content but missing in the tree
 - tree entries/locales missing in content
@@ -102,8 +120,10 @@ npm run build
 - category parent mismatches after resolving same-locale `parent` references back to `categoryId`
 - dangling `parentCategoryId` values in `category-tree.json`
 - duplicate `categoryId` values within a locale
+- generated category-page canonical tags against `dist/sitemap-index.xml`
+- generated category-page hreflang tags against `dist/sitemap-index.xml`
 
-The script currently reads Astro's generated content data store through an internal Astro API, with an inline warning next to the import. This is better than manual MDX/frontmatter parsing, but it is still not a public Astro contract. Keep the follow-up in `next-steps.md` to move this check into an Astro `astro:build:done` integration hook.
+The script intentionally avoids Astro's internal content data store. It builds entry IDs from file paths by taking the path relative to `src/content/categories/`, lowercasing the locale directory segment, and removing `.mdx`, for example `src/content/categories/en-US/excavators.mdx` becomes `en-us/excavators`. Raw `parent` frontmatter is read as a same-locale string such as `en-us/excavators`.
 
 Then verify `/uk/access-platforms` source should include:
 

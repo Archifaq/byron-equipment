@@ -17,16 +17,17 @@
 
 ## SEO Expansion
 
-- Generate a real sitemap from known routes and content collection entries.
-- Add Open Graph and Twitter metadata.
-- Add structured data for marketplace/category pages.
-- Add localized canonical/alternate QA tests.
-- Add QA tests for breadcrumb and related-category generation from `category-tree.json`.
-- Follow up by moving `verify-category-tree` into an Astro `astro:build:done` integration hook instead of reading Astro's internal content data store from a Node script.
+- Add category-specific `ogImage` assets over time; the current implementation falls back to `/images/byron-og-default.png`.
+- Add a real logo asset and then include it in homepage `Organization` JSON-LD.
+- Add structured data for future provider/city pages only after real verified provider data exists.
+- Keep `scripts/verify-category-tree.ts` aligned with `src/content.config.ts` whenever category frontmatter schema fields change.
+
+## Verification Notes
+
+- `scripts/verify-category-tree.ts` now uses direct MDX frontmatter parsing from disk with the installed YAML parser. This replaced the old internal Astro data-store dependency because Astro 7.2.4 does not expose typed content collection entries through a public contract outside page rendering/Vite context.
 
 ## Infrastructure
 
 - Keep Cloudflare Pages on static output directory `dist`.
 - Do not switch back to `dist/server` unless the project intentionally moves to Workers SSR.
 - Add a lightweight automated test for alternate URL generation.
-- Add a generated sitemap for the 81 current static pages.

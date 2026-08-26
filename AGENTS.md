@@ -48,7 +48,15 @@ The `en-US` category bodies have been expanded with B2B rental guidance. UK and 
 
 Manual `## Related Categories` sections have been removed from en-US MDX files. Do not add manual related-category sections back into MDX; use the dynamic related-category rendering from `CategoryView.astro`.
 
-`scripts/verify-category-tree.ts` runs after `astro build` and checks `category-tree.json` against the Astro-generated categories content collection entries. It currently reads Astro's internal content data store; keep the inline warning in that file, and treat migration to an Astro `astro:build:done` hook as an open follow-up.
+`scripts/verify-category-tree.ts` runs after `astro build` and checks `category-tree.json` against category MDX frontmatter parsed from disk. It also checks generated category-page HTML against `dist/sitemap-index.xml` for canonical and hreflang/sitemap drift. The verifier must not read Astro's internal content data store. When it builds entry IDs from files, it mirrors Astro glob-loader behavior by lowercasing the locale path segment and removing `.mdx`.
+
+## SEO
+
+The project generates `/sitemap-index.xml` from `src/pages/sitemap-index.xml.ts`; do not recreate `public/sitemap-index.xml`. Sitemap entries cover 81 static pages and include localized alternate links resolved by `categoryId`.
+
+`Layout.astro` emits canonical, hreflang, Open Graph, Twitter, and JSON-LD tags. Category pages use `Service` plus `BreadcrumbList` JSON-LD. Homepages use `Organization` JSON-LD without a logo unless a real logo asset is added.
+
+Category frontmatter supports optional `ogImage`. If absent, `src/lib/seo.ts` falls back to `/images/byron-og-default.png`.
 
 ## Deployment
 

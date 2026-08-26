@@ -6,7 +6,7 @@
 - `astro.config.mjs`: Astro integrations, static output, and i18n config
 - `tsconfig.json`: strict Astro TypeScript config
 - `category-tree.json`: source of truth for category hierarchy and locale metadata
-- `scripts/verify-category-tree.ts`: post-build category tree/content collection consistency verifier
+- `scripts/verify-category-tree.ts`: post-build category tree/content collection consistency verifier plus generated SEO output QA
 - `tailwind.config.mjs`: Tailwind content paths and minimal theme tokens
 - `.github/workflows/deploy.yml`: Cloudflare Pages CI workflow
 
@@ -37,10 +37,12 @@ Content status:
 
 - `src/lib/i18n.ts`: maps route paths to language codes
 - `src/lib/content.ts`: loads strings, categories, slug lookups, category translation lookups, breadcrumbs, and related categories
+- `src/lib/seo.ts`: sitemap route generation, OG helpers, and JSON-LD builders
 
 ## Components
 
-- `src/layouts/Layout.astro`: page shell, canonical link, hreflang links, header/footer
+- `src/layouts/Layout.astro`: page shell, canonical/hreflang, Open Graph, Twitter, structured data, header/footer
+- `src/components/StructuredData.astro`: JSON-LD script renderer
 - `src/components/Header.astro`: brand navigation and locale switcher
 - `src/components/Footer.astro`: simple site footer
 - `src/components/LocaleSwitcher.astro`: links to available translated versions
@@ -54,11 +56,13 @@ Content status:
 - `src/pages/[...slug].astro`: US category route with `getStaticPaths()`
 - `src/pages/uk/[...slug].astro`: UK homepage and category route with `getStaticPaths()`
 - `src/pages/pl/[...slug].astro`: Polish homepage and category route with `getStaticPaths()`
+- `src/pages/sitemap-index.xml.ts`: generated sitemap endpoint for all 81 static pages with localized alternates
 
 ## Public SEO Files
 
 - `public/robots.txt`
-- `public/sitemap-index.xml`
+- `public/images/byron-og-default.png`
+- `public/images/byron-og-default.svg`
 
 ## Generated or Local Files to Ignore
 
